@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Phuc ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #fff0f3;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container { z-index: 10; padding: 20px; }
+        
+        h1 { color: #ff4d6d; font-size: 2.5rem; min-height: 100px; transition: all 0.3s; }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            position: relative;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #yesBtn { background-color: #ff4d6d; color: white; z-index: 100; }
+        #noBtn { background-color: #ffb3c1; color: white; position: absolute; }
+
+        .heart {
+            position: fixed;
+            top: -10%;
+            color: #ff4d6d;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 id="questionText">Will you be my Valentine? 💌</h1>
+        <div class="buttons">
+            <button id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button id="noBtn" onmouseover="moveButton()">No</button>
+        </div>
+    </div>
+
+    <script>
+        let yesSize = 1;
+        let noAttempts = 0;
+        const messages = [
+            "Are you sure? 🤨",
+            "Think about it again... 🌹",
+            "You're breaking my heart! 💔",
+            "JUST CLICK YES! 😂"
+        ];
+
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            const question = document.getElementById('questionText');
+            
+            // 1. Move No Button
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            // 2. Increase Yes Button Size
+            yesSize += 0.4;
+            yesBtn.style.transform = `scale(${yesSize})`;
+
+            noAttempts++;
+
+            // 3. Question Logic (Phuc + Vietnamese)
+            if (noAttempts === 1) {
+                question.innerText = "Will you be my Valentine, Phuc? 🌹";
+            } else if (noAttempts === 2) {
+                question.innerText = "Làm người yêu anh nhé? ❤️";
+            }
+
+            // 4. Alert Logic (Starting after the language shifts)
+            if (noAttempts >= 4 && (noAttempts % 3 === 1)) {
+                let msgIndex = Math.floor(noAttempts / 4);
+                if (msgIndex < messages.length) alert(messages[msgIndex]);
+            }
+        }
+
+        function celebrate() {
+            let finalMsg = "";
+            
+            if (noAttempts === 0) {
+                finalMsg = "Phew, I didn't expect you to click yes the first time! 😍";
+            } else {
+                finalMsg = "Anh biết là em sẽ đồng ý mà! 🥰";
+            }
+
+            document.body.innerHTML = `
+                <div style="z-index: 10;">
+                    <h1 style="font-size: 3.5rem;">YAY! ❤️</h1>
+                    <p style="font-size: 1.8rem; color: #ff4d6d; padding: 20px;">${finalMsg}</p>
+                </div>
+            `;
+            setInterval(createHeart, 40); 
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
